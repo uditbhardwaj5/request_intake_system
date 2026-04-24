@@ -2,7 +2,7 @@ import React, { Suspense } from 'react';
 import Link from 'next/link';
 import { fetchRequests } from '@/lib/api';
 import { RequestCard } from '@/components/request-card';
-import { ErrorState, EmptyState, SkeletonCard } from '@/components/states';
+import { EmptyState, SkeletonCard } from '@/components/states';
 import { ArrowRight } from 'lucide-react';
 
 const CATEGORIES = [
@@ -23,51 +23,46 @@ interface DashboardContentProps {
 async function DashboardContent({ searchParams }: DashboardContentProps) {
   const page = parseInt(searchParams?.page || '1', 10);
   const category = searchParams?.category || 'all';
+  const data = await fetchRequests(page, 10, category);
 
-  try {
-    const data = await fetchRequests(page, 10, category);
-
-    if (data.total === 0) {
-      return <EmptyState filter={category} />;
-    }
-
-    return (
-      <>
-        <div className="space-y-4">
-          {data.data.map((request) => (
-            <RequestCard key={request._id} request={request} />
-          ))}
-        </div>
-
-        {/* Pagination */}
-        {data.pages > 1 && (
-          <div className="flex justify-center gap-2 mt-8">
-            {page > 1 && (
-              <Link
-                href={`/dashboard?page=${page - 1}&category=${category}`}
-                className="btn-secondary"
-              >
-                ← Previous
-              </Link>
-            )}
-            <span className="px-4 py-2 text-gray-600">
-              Page {page} of {data.pages}
-            </span>
-            {page < data.pages && (
-              <Link
-                href={`/dashboard?page=${page + 1}&category=${category}`}
-                className="btn-primary"
-              >
-                Next →
-              </Link>
-            )}
-          </div>
-        )}
-      </>
-    );
-  } catch (error) {
-    return <ErrorState error={error as Error} retry={() => window.location.reload()} />;
+  if (data.total === 0) {
+    return <EmptyState filter={category} />;
   }
+
+  return (
+    <>
+      <div className="space-y-4">
+        {data.data.map((request) => (
+          <RequestCard key={request._id} request={request} />
+        ))}
+      </div>
+
+      {/* Pagination */}
+      {data.pages > 1 && (
+        <div className="flex justify-center gap-2 mt-8">
+          {page > 1 && (
+            <Link
+              href={`/dashboard?page=${page - 1}&category=${category}`}
+              className="btn-secondary"
+            >
+              ← Previous
+            </Link>
+          )}
+          <span className="px-4 py-2 text-gray-600">
+            Page {page} of {data.pages}
+          </span>
+          {page < data.pages && (
+            <Link
+              href={`/dashboard?page=${page + 1}&category=${category}`}
+              className="btn-primary"
+            >
+              Next →
+            </Link>
+          )}
+        </div>
+      )}
+    </>
+  );
 }
 
 export default async function DashboardPage({

@@ -18,7 +18,7 @@ export default function DashboardError({
         </div>
         <h2 className="text-2xl font-bold text-gray-900 mb-2">Something went wrong</h2>
         <p className="text-gray-600 mb-6">
-          We encountered an error while loading the dashboard. Please try again.
+          {error.message || 'We encountered an error while loading the dashboard. Please try again.'}
         </p>
         <button
           onClick={reset}

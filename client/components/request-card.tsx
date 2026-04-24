@@ -51,7 +51,7 @@ export function RequestCard({ request }: RequestCardProps) {
 
       {request.summary && (
         <p className="text-sm text-gray-600 mb-4 p-2 bg-gray-50 rounded italic">
-          "{request.summary}"
+          &quot;{request.summary}&quot;
         </p>
       )}
 
