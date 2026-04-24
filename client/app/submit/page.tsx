@@ -6,6 +6,15 @@ import { createRequest, CreateRequestPayload } from '@/lib/api';
 import Link from 'next/link';
 import { CheckCircle, AlertCircle, Loader } from 'lucide-react';
 
+interface ApiErrorLike {
+  response?: {
+    data?: {
+      message?: string;
+    };
+  };
+  message?: string;
+}
+
 export default function SubmitPage() {
   const [submitStatus, setSubmitStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
   const [errorMessage, setErrorMessage] = useState('');
@@ -33,11 +42,12 @@ export default function SubmitPage() {
       setTimeout(() => {
         setSubmitStatus('idle');
       }, 3000);
-    } catch (error: any) {
+    } catch (error: unknown) {
+      const typedError = error as ApiErrorLike;
       setSubmitStatus('error');
       setErrorMessage(
-        error.response?.data?.message ||
-        error.message ||
+        typedError.response?.data?.message ||
+        typedError.message ||
         'Failed to submit request. Please try again.',
       );
     }
