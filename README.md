@@ -267,33 +267,6 @@ Respond only with the JSON object. No explanations, no markdown, no extra text.
 - Empty state when no requests
 - Error state with retry button
 
-## 🎯 Testing Checklist
-
-1. **Backend**
-   - [ ] POST /requests accepts valid input
-   - [ ] POST /requests validates required fields
-   - [ ] POST /requests returns 201 immediately
-   - [ ] AI enrichment runs async (doesn't block response)
-   - [ ] GET /requests returns paginated results
-   - [ ] GET /requests?category=X filters correctly
-   - [ ] MongoDB persists data correctly
-
-2. **Frontend**
-   - [ ] Submit form validates before submission
-   - [ ] Submit form shows loading state
-   - [ ] Submit form shows success confirmation
-   - [ ] Dashboard fetches and displays requests
-   - [ ] Dashboard filtering works with URL params
-   - [ ] Dashboard skeleton shows during load
-   - [ ] Dashboard empty state displays when no data
-   - [ ] Dashboard error state recovers on retry
-
-3. **AI Integration**
-   - [ ] OpenRouter API key is configured
-   - [ ] AI response is parsed correctly
-   - [ ] Fallback values used on parse failure
-   - [ ] Request persists even if AI fails
-
 ## 📦 Environment Variables
 
 ### Server (.env)
@@ -364,7 +337,3 @@ NEXT_PUBLIC_API_URL=http://localhost:3001
    - Unit tests for services
    - Integration tests for API
    - E2E tests for workflows
-
-## 📄 License
-
-MIT
